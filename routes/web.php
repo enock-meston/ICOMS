@@ -5,9 +5,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\department\DepartmentController;
 use App\Http\Controllers\FieldActivityController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\InputAllocationController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProductionPlanController;
+use App\Http\Controllers\RiceDeliveryController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SeasonController;
 use App\Http\Controllers\UserController;
@@ -67,7 +69,16 @@ Route::middleware('auth.any')->group(function () {
     Route::post('/fieldativity/action',[FieldActivityController::class,'handleAction'])->name('field-activity.store');
 //member
     Route::get('/member',[MemberController::class,'index'])->name('member.index');
-    Route::post('/member/action',[MemberController::class,'handleAction'])->name('member.store');
+    Route::post('/member/action',[MemberController::class,'handleAction'])->name('members.handleAction');
+
+//input alloction
+    Route::get('/allocation',[InputAllocationController::class,'index'])->name('allocation.index');
+    Route::post('/allocation/action',[InputAllocationController::class,'handleAction'])->name('allocation.handleAction');
+
+//RiceDelivery
+    Route::get('/riceDelivery',[RiceDeliveryController::class,'index'])->name('riceDelivery.index');
+    Route::post('/riceDelivery/action',[RiceDeliveryController::class,'handleAction'])->name('riceDelivery.handleAction');
+
 
     // Logout route
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

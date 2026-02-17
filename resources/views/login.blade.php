@@ -73,7 +73,7 @@
                             <div class="mb-3">
                                 <label for="userPassword" class="form-label">Password <span class="text-danger">*</span></label>
                                 <div class="input-group">
-                                    <input type="password" class="form-control" name="password" id="userPassword" placeholder="••••••••" required>
+                                    <input type="password" class="form-control" name="password" value="123456789" id="userPassword" placeholder="••••••••" required>
                                 </div>
                             </div>
 

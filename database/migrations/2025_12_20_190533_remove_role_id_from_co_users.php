@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::table('co_users', function (Blueprint $table) {
             //
-            $table->dropColumn('role_id');
+            if (Schema::hasColumn('co_users', 'role_id')) {
+                $table->dropColumn('role_id');
+            }
         });
     }
 

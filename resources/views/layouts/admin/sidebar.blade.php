@@ -118,12 +118,28 @@
             </li>
             {{-- member --}}
             <li class="side-nav-item">
-                <a href="{{ route('field-activity.index') }}" class="side-nav-link">
+                <a href="{{ route('member.index') }}" class="side-nav-link">
                     <span class="menu-icon"><i data-lucide="book"></i></span>
                     <span class="menu-text" data-lang="book"> Member </span>
                 </a>
             </li>
 
+
+
+            {{-- input allocation --}}
+            <li class="side-nav-item">
+                <a href="{{ route('allocation.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="book"></i></span>
+                    <span class="menu-text" data-lang="book"> Input Allocation </span>
+                </a>
+            </li>
+            {{-- // rice delivery --}}
+            <li class="side-nav-item">
+                <a href="{{ route('riceDelivery.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="book"></i></span>
+                    <span class="menu-text" data-lang="book"> Rice Delivery </span>
+                </a>
+            </li>
         </ul>
     </div>
 </div>
