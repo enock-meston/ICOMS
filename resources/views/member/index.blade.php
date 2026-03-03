@@ -13,20 +13,46 @@
             </div>
         </div>
 
-          <div class="row">
+        <div class="row">
             <div class="col-lg-12">
-                <form class="card border p-3">
-                    <div class="row gap-3">
-                        <div class="col">
+                <form class="card border p-3" method="GET" action="{{ route('member.index') }}">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-lg-7">
                             @if (!($currentUser && $currentUser->can('role-list')))
                                 <div class="d-flex flex-wrap align-items-center gap-2">
                                     <button type="button" onclick="setAction('INSERT')" data-bs-toggle="modal"
                                         data-bs-target="#memberModal"
-                                        class="btn btn-sm btn-primary btn-add-user">Add Member
+                                        class="btn btn-sm btn-primary btn-add-user">
+                                        <i class="ri-user-add-line me-1"></i>Add Member
                                     </button>
+
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#importModal"
+                                        class="btn btn-sm btn-success">
+                                        <i class="ri-upload-2-line me-1"></i>Bulk Import (Excel)
+                                    </button>
+
+                                    <a href="{{ route('members.downloadTemplate') }}" class="btn btn-sm btn-outline-secondary">
+                                        <i class="ri-download-2-line me-1"></i>Download Template
+                                    </a>
                                 </div>
                             @endif
-
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="input-group">
+                                <input
+                                    type="text"
+                                    name="q"
+                                    class="form-control form-control-sm"
+                                    placeholder="Search by names or National ID"
+                                    value="{{ request('q') }}"
+                                >
+                                @if (request()->filled('q'))
+                                    <a class="btn btn-outline-secondary btn-sm" href="{{ route('member.index') }}">Clear</a>
+                                @endif
+                                <button class="btn btn-outline-primary btn-sm" type="submit">
+                                    Search
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -35,8 +61,19 @@
                     <div class="alert alert-success text-bg-success alert-dismissible" role="alert">
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"
                             aria-label="Close"></button>
-
                         <div>{{ session('success') }}</div>
+                    </div>
+                @endif
+
+                @if (session('import_errors'))
+                    <div class="alert alert-warning alert-dismissible" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <strong>Some rows had errors:</strong>
+                        <ul class="mb-0 mt-1">
+                            @foreach (session('import_errors') as $err)
+                                <li>{{ $err }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
 
@@ -77,7 +114,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $count = 1; @endphp
+                                @php $count = $Members->firstItem() ?? 1; @endphp
                                 @foreach ($Members as $member)
                                     <tr>
                                         <td>{{ $count++ }}</td>
@@ -139,21 +176,31 @@
                                 @endforeach
                             </tbody>
                         </table>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
+                            <div class="text-muted small">
+                                @if ($Members->total() > 0)
+                                    Showing {{ $Members->firstItem() }}–{{ $Members->lastItem() }} of {{ $Members->total() }} members
+                                @else
+                                    No members found
+                                @endif
+                            </div>
+                            <div>
+                                {{ $Members->onEachSide(1)->links() }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Member Modal -->
-    <div class="modal
-                                                fade" id="memberModal" tabindex="-1" role="dialog"
-        aria-hidden="true">
+    <!-- Single Member Modal -->
+    <div class="modal fade" id="memberModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="memberModalTitle">Add New Member
-                    </h4>
+                    <h4 class="modal-title" id="memberModalTitle">Add New Member</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -178,8 +225,7 @@
                             <div class="col-md-6">
                                 <label class="form-label">Gender</label>
                                 <select name="gender" id="gender" class="form-select" required>
-                                    <option value="" disabled selected>Select
-                                        Gender</option>
+                                    <option value="" disabled selected>Select Gender</option>
                                     <option value="MALE">MALE</option>
                                     <option value="FEMALE">FEMALE</option>
                                 </select>
@@ -187,11 +233,9 @@
                             <div class="col-md-6">
                                 <label class="form-label">Group</label>
                                 <select name="group_id" id="group_id" class="form-select" required>
-                                    <option value="" disabled selected>Select
-                                        Group</option>
+                                    <option value="" disabled selected>Select Group</option>
                                     @foreach ($Groups as $group)
-                                        <option value="{{ $group->id }}">
-                                            {{ $group->name }}</option>
+                                        <option value="{{ $group->id }}">{{ $group->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -205,14 +249,12 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Shares</label>
-                                <input type="number" step="0.01" name="Shares" id="Shares" class="form-control"
-                                    required>
+                                <input type="number" step="0.01" name="Shares" id="Shares" class="form-control" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Status</label>
                                 <select name="status" id="statuses" class="form-select" required>
-                                    <option value="" disabled selected>Select
-                                        Status</option>
+                                    <option value="" disabled selected>Select Status</option>
                                     <option value="ACTIVE">ACTIVE</option>
                                     <option value="INACTIVE">INACTIVE</option>
                                 </select>
@@ -228,6 +270,67 @@
         </div>
     </div>
 
+    <!-- Bulk Import Modal -->
+    <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="ri-upload-2-line me-2"></i>Bulk Import Members
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ route('members.import') }}" enctype="multipart/form-data">
+                        @csrf
+
+                        <div class="mb-3 p-3 bg-light rounded border">
+                            <p class="mb-2 fw-semibold text-muted small">
+                                <i class="ri-information-line me-1"></i>How it works:
+                            </p>
+                            <ol class="mb-0 small text-muted ps-3">
+                                <li>Download the Excel template using the button below</li>
+                                <li>Fill in member data (one row per member)</li>
+                                <li>Select the <strong>Group</strong> all imported members belong to</li>
+                                <li>Upload the filled file and click <strong>Import</strong></li>
+                            </ol>
+                        </div>
+
+                        <div class="mb-3">
+                            <a href="{{ route('members.downloadTemplate') }}"
+                                class="btn btn-outline-secondary btn-sm w-100">
+                                <i class="ri-download-2-line me-1"></i>Download Excel Template
+                            </a>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Group <span class="text-danger">*</span></label>
+                            <select name="group_id" class="form-select" required>
+                                <option value="" disabled selected>— Select Group for all imported members —</option>
+                                @foreach ($Groups as $group)
+                                    <option value="{{ $group->id }}">{{ $group->name }}</option>
+                                @endforeach
+                            </select>
+                            <div class="form-text">All members in this file will be assigned to this group.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Excel File <span class="text-danger">*</span></label>
+                            <input type="file" name="import_file" class="form-control" accept=".xlsx,.xls" required>
+                            <div class="form-text">Accepted formats: .xlsx, .xls</div>
+                        </div>
+
+                        <div class="d-grid mt-3">
+                            <button type="submit" class="btn btn-success">
+                                <i class="ri-upload-2-line me-1"></i>Import Members
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         function setAction(action, el = null) {
             const btn = document.getElementById('mainActionBtn');
@@ -235,15 +338,12 @@
             const title = document.getElementById('memberModalTitle');
 
             actionInput.value = action;
-            // Reset button styles
             btn.classList.remove("btn-info", "btn-success", "btn-primary", "btn-danger");
-
-            // title
             title.innerText = "";
 
             if (action === 'INSERT') {
                 document.getElementById('id').value = '';
-                document.querySelector('form').reset();
+                document.querySelector('#memberModal form').reset();
                 btn.innerText = 'Insert Member';
                 btn.disabled = false;
                 title.innerText = 'Add New Member';
@@ -265,33 +365,23 @@
             if (action === 'VIEW') {
                 btn.innerText = 'View Member';
                 btn.disabled = true;
-                disableForm(true);
                 title.innerText = 'View Member';
                 btn.classList.add("btn-info");
             } else if (action === 'UPDATE') {
                 btn.innerText = 'Update Member';
                 btn.disabled = false;
-                disableForm(false);
                 title.innerText = 'Update Member';
                 btn.classList.add("btn-success");
             } else if (action === 'DELETE') {
                 btn.innerText = 'Delete Member';
                 btn.disabled = false;
-                disableForm(true);
                 title.innerText = 'Delete Member';
                 btn.classList.add("btn-danger");
             } else if (action === 'INSERT') {
                 btn.innerText = 'Insert Member';
                 btn.disabled = false;
-                disableForm(false);
                 btn.classList.add("btn-primary");
             }
-        }
-
-        function disableForm(disabled) {
-            // document.querySelectorAll('#memberModal input, #memberModal select').forEach(el => {
-            //     if (el.id !== 'id' && el.id !== 'action') el.disabled = disabled;
-            // });
         }
     </script>
 

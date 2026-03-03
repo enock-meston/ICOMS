@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('manager_id')->constrained('co_users')->cascadeOnUpdate()->restrictOnDelete();
+            $table->string('district');
             $table->string('Sector');
             $table->string('cell');
             $table->string('village');

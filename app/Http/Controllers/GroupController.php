@@ -26,6 +26,7 @@ class GroupController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'district' => 'required',
             'Sector' => 'required',
             'cell' => 'required',
             'village' => 'required',
@@ -44,6 +45,7 @@ class GroupController extends Controller
         $group = Group::create([
             'name' => $request->name,
             'manager_id' => $currentUserId,
+            'district' => $request->district,
             'Sector' => $request->Sector,
             'cell' => $request->cell,
             'village' => $request->village,
@@ -66,7 +68,7 @@ class GroupController extends Controller
         // 1. Validate input
         $validated = $request->validate([
             'name' => 'required',
-            'Sector' => 'required',
+            'district' => 'required',
             'cell' => 'required',
             'village' => 'required',
         ]);
@@ -80,6 +82,7 @@ class GroupController extends Controller
         $data = [
             'name' => $request->name,
             'manager_id' => $currentUserId,
+            'district' => $request->district,
             'Sector' => $request->Sector,
             'cell' => $request->cell,
             'village' => $request->village,

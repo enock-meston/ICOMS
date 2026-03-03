@@ -132,9 +132,22 @@
                                     <select name="member_id" id="member_id" class="form-select" required>
                                         <option value="">Select Member</option>
                                         @foreach ($Members as $member)
-                                            <option value="{{ $member->id }}">{{ $member->names }}</option>
+                                            <option value="{{ $member->id }}"
+                                                data-member-code="{{ $member->member_code }}">
+                                                {{ $member->names }}
+                                            </option>
                                         @endforeach
                                     </select>
+
+                                    {{-- <label class="form-label mt-2">Input Allocation</label>
+                                    <select name="input_allocation_id" id="input_allocation_id" class="form-select">
+                                        <option value="">Select Input Allocation</option>
+                                        @foreach ($InputAllocations as $allocation)
+                                            <option value="{{ $allocation->id }}">
+                                                {{ $allocation->Type_ }} - {{ $allocation->Quantity }} {{ $allocation->Unit_Cost }}
+                                            </option>
+                                        @endforeach
+                                    </select> --}}
                                 </div>
 
                                 <div class="col-md-6">
@@ -160,27 +173,29 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label">Quality Grade</label>
+                                    <label class="form-label">Quality Grade (A/B/C)</label>
                                     <input type="text" name="Quality_Grade" id="Quality_Grade" class="form-control"
                                         required>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label">Unit Price</label>
+                                    <label class="form-label">Unit Price (Frw)</label>
                                     <input type="number" step="0.01" name="Unit_Price" id="Unit_Price"
                                         class="form-control" required>
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label class="form-label">Gross Value</label>
+                                    <label class="form-label">Gross Value(Frw)! with out remove any </label>
                                     <input type="number" step="0.01" name="Gross_Value" id="Gross_Value"
                                         class="form-control">
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label class="form-label">Loan Deduction</label>
+
+                                    <label class="form-label">Loan Deduction/input loan (ayo yagurijwe)</label>
                                     <input type="number" step="0.01" name="Loan_Deduction" id="Loan_Deduction"
                                         class="form-control">
+
                                 </div>
 
                                 <div class="col-md-4">
@@ -248,5 +263,90 @@
                     btn.innerText = "Add Delivery";
                 }
             }
+        </script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $('#member_id').on('change', function () {
+                const $select = $(this);
+                const memberId = $select.val();
+                const $opt = $select.find('option:selected');
+                const memberCode = $opt.data('member-code') || '';
+                const memberName = $opt.text().trim();
+
+                $('#input_allocation_id').html('<option value="">Loading...</option>');
+
+                if (memberId) {
+                    $.ajax({
+                        url: '{{ url('/members') }}/' + memberId + '/allocations',
+                        type: 'GET',
+                        success: function (data) {
+                            console.log('Allocations for member', memberId, data);
+                            let debugMsg =
+                                'Selected member_id: ' + memberId +
+                                '\nmember_code: ' + memberCode +
+                                '\nname: ' + memberName +
+                                '\nallocations count: ' + (Array.isArray(data) ? data.length : 0);
+
+                            if (Array.isArray(data) && data.length >= 0) {
+                                let totalUnitCost = data.reduce(function (sum, allocation) {
+                                    return sum + parseFloat(allocation.Unit_Cost || 0);
+                                }, 0);
+
+                                // Set value to input field
+                                document.getElementById("Loan_Deduction").value = totalUnitCost.toFixed(2);
+                            }else{
+                                document.getElementById("Loan_Deduction").value = 0;
+
+                            }
+
+                            let options = '<option value="">Select Input Allocation</option>';
+
+                            if (Array.isArray(data) && data.length > 0) {
+                                data.forEach(function (allocation) {
+                                    options += `<option value="${allocation.id}">
+                                        ${allocation.Type_} - ${allocation.Quantity} ${allocation.Unit_Cost}
+                                    </option>`;
+                                });
+                            } else {
+                                options = '<option value="">No allocations found for this member</option>';
+                            }
+
+                            $('#input_allocation_id').html(options);
+                        },
+                        error: function (xhr) {
+                            console.error('Error loading allocations', xhr);
+                            $('#input_allocation_id').html('<option value="">Failed to load allocations</option>');
+                        }
+                    });
+                } else {
+                    $('#input_allocation_id').html('<option value="">Select Input Allocation</option>');
+                }
+            });
+
+            // Auto-calculate Gross_Value and Net_Payable from Quantity_KG, Unit_Price, Loan_Deduction, Other_Deductions
+            function recalcTotals() {
+                const qty = parseFloat(document.getElementById('Quantity_KG').value || 0);
+                const unitPrice = parseFloat(document.getElementById('Unit_Price').value || 0);
+                const loan = parseFloat(document.getElementById('Loan_Deduction').value || 0);
+                const other = parseFloat(document.getElementById('Other_Deductions').value || 0);
+
+                // quantity * unit price = gross value
+                const grossValue = qty * unitPrice;
+                document.getElementById('Gross_Value').value = grossValue ? grossValue.toFixed(2) : '';
+
+                // gross value - loan deduction - other deductions = net payable
+                const netPayable = grossValue - loan - other;
+                document.getElementById('Net_Payable').value = netPayable ? netPayable.toFixed(2) : '';
+            }
+
+            // Recalculate when relevant fields change
+            ['Quantity_KG', 'Unit_Price', 'Loan_Deduction', 'Other_Deductions'].forEach(function (id) {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('input', recalcTotals);
+                    el.addEventListener('change', recalcTotals);
+                }
+            });
+
         </script>
     @endsection

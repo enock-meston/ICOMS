@@ -22,6 +22,12 @@ class InputAllocationController extends Controller
         return view('input_allocation.index', compact('title', 'Members', 'Seasons', 'Users', 'InputAllocations'));
     }
 
+    public function getAllocations($id)
+    {
+        $allocations = Input_Allocation::where('member_id', $id)->get();
+        return response()->json($allocations);
+    }
+
     public function handleAction(Request $request)
     {
         // Validate input

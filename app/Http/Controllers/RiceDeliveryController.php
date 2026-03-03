@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Member;
 use App\Models\Rice_Delivery;
+use App\Models\Input_Allocation;
 use App\Models\Season;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,15 @@ class RiceDeliveryController extends Controller
         $RiceDeliveries = Rice_Delivery::orderBy('id', 'desc')->get();
         $Members = Member::all();
         $Seasons = Season::all();
-        return view('riceDelivery.index', compact('title', 'RiceDeliveries', 'Members', 'Seasons'));
+        $InputAllocations = Input_Allocation::orderBy('created_at', 'DESC')->get();
+        return view('riceDelivery.index', compact('title', 'RiceDeliveries', 'Members', 'Seasons', 'InputAllocations'));
+    }
+
+
+    public function getAllocations($id)
+    {
+        $allocations = Input_Allocation::where('member_id', $id)->get();
+        return response()->json($allocations);
     }
 
     public function handleAction(Request $request)
@@ -46,8 +55,7 @@ class RiceDeliveryController extends Controller
         }
         $currentUserId = $currentUser->id;
 
-        dd($request->all());
-        exit;
+
         DB::statement(
             'CALL sp_rice_deliveries_action(?,?,?,?,?,?,?,?,?,?,?,?,?)',
             [

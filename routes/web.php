@@ -21,6 +21,8 @@ Route::get('/', function () {
     return view('login', compact('title'));
 });
 
+// (zip-test route removed after debugging)
+
 // Route::middleware('guest.any')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'loginMethod'])->name('login.post');
@@ -70,14 +72,19 @@ Route::middleware('auth.any')->group(function () {
 //member
     Route::get('/member',[MemberController::class,'index'])->name('member.index');
     Route::post('/member/action',[MemberController::class,'handleAction'])->name('members.handleAction');
+    Route::get('/members/download-template',[MemberController::class, 'downloadTemplate'])->name('members.downloadTemplate');
+    Route::post('/members/import',[MemberController::class, 'import'])->name('members.import');
+
 
 //input alloction
     Route::get('/allocation',[InputAllocationController::class,'index'])->name('allocation.index');
     Route::post('/allocation/action',[InputAllocationController::class,'handleAction'])->name('allocation.handleAction');
+    Route::get('/member/{id}/allocations',[InputAllocationController::class,'getAllocations'])->name('allocation.getAllocations');
 
-//RiceDelivery
+    //RiceDelivery
     Route::get('/riceDelivery',[RiceDeliveryController::class,'index'])->name('riceDelivery.index');
     Route::post('/riceDelivery/action',[RiceDeliveryController::class,'handleAction'])->name('riceDelivery.handleAction');
+    Route::get('/members/{id}/allocations',[RiceDeliveryController::class,'getAllocations'])->name('allocation.getAllocations');
 
 
     // Logout route

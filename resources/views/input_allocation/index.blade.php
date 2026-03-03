@@ -147,8 +147,16 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">Type</label>
-                                <input type="text" name="Type_" id="Type_" class="form-control" required>
+                                <label class="form-label">Type (SEED / FERTILIZER / PESTICIDE / CASH / OTHER)</label>
+                                {{-- <input type="text" name="Type_" id="Type_" class="form-control" required> --}}
+                                <select name="Type_" id="Type_" class="form-select" required>
+                                    <option value="">Select Type</option>
+                                    <option value="SEED">SEED</option>
+                                    <option value="FERTILIZER">FERTILIZER</option>
+                                    <option value="PESTICIDE">PESTICIDE</option>
+                                    <option value="CASH">CASH</option>
+                                    <option value="OTHER">OTHER</option>
+                                </select>
                             </div>
 
                             <div class="col-md-6">
@@ -249,4 +257,8 @@
             }
         }
     </script>
+
+    {{--  --}}
+
+    
 @endsection

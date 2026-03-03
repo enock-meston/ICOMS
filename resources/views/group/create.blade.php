@@ -40,7 +40,7 @@
 
 
         <div class="row">
-            <div class="col-md-12 col-xxl-3">
+            <div class="col-md-12 col-xxl-6">
                 <div class="card">
                     <div class="card-body text-center">
 
@@ -52,6 +52,14 @@
                                             class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <input type="text" name="name" class="form-control" id="userName"
+                                            placeholder="....." required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="userEmail" class="form-label">Akarere <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <input type="text" name="district" class="form-control" id="userEmail"
                                             placeholder="....." required>
                                     </div>
                                 </div>
