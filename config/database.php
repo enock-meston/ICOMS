@@ -101,7 +101,7 @@ return [
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DB_URL'),
-            'host' => env('DB_HOST', 'ENOCK-PC'),
+            'host' => env('DB_HOST', 'DESKTOP-PCEBFM0'),
             'port' => env('DB_PORT', '1433'),
             'database' => env('DB_DATABASE', 'CoOperatives_db'),
             'username' => env('DB_USERNAME', ''),

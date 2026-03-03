@@ -11,14 +11,14 @@ class GroupController extends Controller
     public function index()
     {
         $title = "Amatsinda";
-        $groups = Group::all();
+        $groups = Group::all(); 
         return view('group.index', compact('title', 'groups'));
     }
 
     // view create co user form
     public function create()
     {
-        $title = "Kwandika itsinda ";
+        $title= "Kwandika itsinda ";
         return view('group.create', compact('title'));
     }
 
