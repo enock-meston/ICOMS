@@ -40,7 +40,7 @@
 
 
         <div class="row">
-            <div class="col-md-12 col-xxl-3">
+            <div class="col-md-12 col-xxl-6">
                 <div class="card">
                     <div class="card-body text-center">
 

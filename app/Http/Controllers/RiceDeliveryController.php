@@ -8,6 +8,7 @@ use App\Models\Input_Allocation;
 use App\Models\Season;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+// use App\Http\Controllers\Controller\send_SMS;
 
 class RiceDeliveryController extends Controller
 {
@@ -55,6 +56,10 @@ class RiceDeliveryController extends Controller
         }
         $currentUserId = $currentUser->id;
 
+        // select member phone number
+        $member = Member::find($request->member_id);
+        $phoneNumber = $member ? $member->phone : null;
+        $names = $member ? $member->names : null;
 
         DB::statement(
             'CALL sp_rice_deliveries_action(?,?,?,?,?,?,?,?,?,?,?,?,?)',
@@ -75,9 +80,16 @@ class RiceDeliveryController extends Controller
             ]
         );
 
+        // send sms function here
+
+        $result = $this->send_SMS($phoneNumber, $names, $request->Net_Payable);
+        // dd($result);
+        // exit;
         return back()->with(
             'success',
-            'Action ' . $request->action . ' performed successfully!'
+            'Action ' . $request->action . ' performed successfully!  and ' . $result['status']
         );
     }
+
+
 }

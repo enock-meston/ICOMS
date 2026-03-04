@@ -8,7 +8,7 @@
 
             <div class="text-end">
                 <ol class="breadcrumb m-0 py-0">
-                    <li class="breadcrumb-item"><a href="javascript: void(0);">UBold</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);"></a></li>
 
                     <li class="breadcrumb-item active">Dashboard</li>
                 </ol>
@@ -26,8 +26,8 @@
                                 </span>
                             </div>
                             <div class="text-end">
-                                <h3 class="mb-2 fw-normal">$<span data-target="124.7">0</span>K</h3>
-                                <p class="mb-0 text-muted"><span>Total Sales</span></p>
+                                <h3 class="mb-2 fw-normal"><span>{{ $userCount }}</span></h3>
+                                <p class="mb-0 text-muted"><span>Total Users</span></p>
                             </div>
                         </div>
                     </div>
@@ -45,8 +45,8 @@
                                 </span>
                             </div>
                             <div class="text-end">
-                                <h3 class="mb-2 fw-normal"><span data-target="2358">0</span></h3>
-                                <p class="mb-0 text-muted"><span>Orders Placed</span></p>
+                                <h3 class="mb-2 fw-normal"><span>{{ $allocatedRecord }}</span></h3>
+                                <p class="mb-0 text-muted"><span>Input Allocations</span></p>
                             </div>
                         </div>
                     </div>
@@ -64,8 +64,8 @@
                                 </span>
                             </div>
                             <div class="text-end">
-                                <h3 class="mb-2 fw-normal"><span data-target="839">0</span></h3>
-                                <p class="mb-0 text-muted"><span>Active Customers</span></p>
+                                <h3 class="mb-2 fw-normal"><span>{{ $memberCount }}</span></h3>
+                                <p class="mb-0 text-muted"><span>Members</span></p>
                             </div>
                         </div>
                     </div>
@@ -83,8 +83,8 @@
                                 </span>
                             </div>
                             <div class="text-end">
-                                <h3 class="mb-2 fw-normal"><span data-target="41">0</span></h3>
-                                <p class="mb-0 text-muted"><span>Refund Requests</span></p>
+                                <h3 class="mb-2 fw-normal"><span>{{ $deliveredRecord }}</span></h3>
+                                <p class="mb-0 text-muted"><span>Rice Deliveries</span></p>
                             </div>
                         </div>
                     </div>
