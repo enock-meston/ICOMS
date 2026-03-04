@@ -104,40 +104,143 @@
 
             <li class="side-nav-item">
                 <a href="{{ route('plan.index') }}" class="side-nav-link">
-                    <span class="menu-icon"><i data-lucide="book"></i></span>
-                    <span class="menu-text" data-lang="book"> Plan </span>
+                    <span class="menu-icon"><i data-lucide="calendar"></i></span>
+                    <span class="menu-text" data-lang="book"> Production Plan </span>
                 </a>
             </li>
 
             {{-- field activity --}}
             <li class="side-nav-item">
                 <a href="{{ route('field-activity.index') }}" class="side-nav-link">
-                    <span class="menu-icon"><i data-lucide="book"></i></span>
+                    <span class="menu-icon"><i data-lucide="activity"></i></span>
                     <span class="menu-text" data-lang="book"> Field Activity </span>
                 </a>
             </li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('compost.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="leaf"></i></span>
+                    <span class="menu-text" data-lang="book"> Compost </span>
+                </a>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('task.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="check-square"></i></span>
+                    <span class="menu-text" data-lang="book"> Tasks </span>
+                </a>
+            </li>
+
+            <li class="side-nav-title" data-lang="apps-title">Operations</li>
+
             {{-- member --}}
             <li class="side-nav-item">
                 <a href="{{ route('member.index') }}" class="side-nav-link">
-                    <span class="menu-icon"><i data-lucide="book"></i></span>
+                    <span class="menu-icon"><i data-lucide="users"></i></span>
                     <span class="menu-text" data-lang="book"> Member </span>
                 </a>
             </li>
 
-
+            <li class="side-nav-item">
+                <a href="{{ route('member-payment.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="credit-card"></i></span>
+                    <span class="menu-text" data-lang="book"> Member Payment </span>
+                </a>
+            </li>
 
             {{-- input allocation --}}
             <li class="side-nav-item">
                 <a href="{{ route('allocation.index') }}" class="side-nav-link">
-                    <span class="menu-icon"><i data-lucide="book"></i></span>
+                    <span class="menu-icon"><i data-lucide="package"></i></span>
                     <span class="menu-text" data-lang="book"> Input Allocation </span>
                 </a>
             </li>
             {{-- // rice delivery --}}
             <li class="side-nav-item">
                 <a href="{{ route('riceDelivery.index') }}" class="side-nav-link">
-                    <span class="menu-icon"><i data-lucide="book"></i></span>
+                    <span class="menu-icon"><i data-lucide="truck"></i></span>
                     <span class="menu-text" data-lang="book"> Rice Delivery </span>
+                </a>
+            </li>
+
+            <li class="side-nav-title" data-lang="apps-title">Procurement</li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('procurement-plan.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="file-text"></i></span>
+                    <span class="menu-text" data-lang="book"> Procurement Plan </span>
+                </a>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('tender.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="clipboard-list"></i></span>
+                    <span class="menu-text" data-lang="book"> Tenders </span>
+                </a>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('bid.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="gavel"></i></span>
+                    <span class="menu-text" data-lang="book"> Bids </span>
+                </a>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('supplier.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="truck"></i></span>
+                    <span class="menu-text" data-lang="book"> Suppliers </span>
+                </a>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('supplier-payment.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="credit-card"></i></span>
+                    <span class="menu-text" data-lang="book"> Supplier Payment </span>
+                </a>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('committee.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="users"></i></span>
+                    <span class="menu-text" data-lang="book"> Committees </span>
+                </a>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('tender-evaluation.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="check-circle"></i></span>
+                    <span class="menu-text" data-lang="book"> Tender Evaluation </span>
+                </a>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('contract.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="file-signature"></i></span>
+                    <span class="menu-text" data-lang="book"> Contracts </span>
+                </a>
+            </li>
+
+            <li class="side-nav-title" data-lang="apps-title">Administration</li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('meeting.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="users"></i></span>
+                    <span class="menu-text" data-lang="book"> Meetings </span>
+                </a>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('decision.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="alert-circle"></i></span>
+                    <span class="menu-text" data-lang="book"> Decisions </span>
+                </a>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('report.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="bar-chart"></i></span>
+                    <span class="menu-text" data-lang="book"> Reports </span>
                 </a>
             </li>
         </ul>

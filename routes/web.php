@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\BidController;
+use App\Http\Controllers\TenderController;
 use App\Http\Controllers\CoOperative\CoUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\department\DepartmentController;
@@ -24,39 +26,39 @@ Route::get('/', function () {
 // (zip-test route removed after debugging)
 
 // Route::middleware('guest.any')->group(function () {
-    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [LoginController::class, 'loginMethod'])->name('login.post');
+Route::get('/login', [LoginController::class , 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class , 'loginMethod'])->name('login.post');
 // });
 
 // Protected routes - require authentication from either guard
 Route::middleware('auth.any')->group(function () {
-    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/admin/dashboard', [DashboardController::class , 'index'])->name('dashboard');
     Route::resource("users", UserController::class);
     Route::resource("roles", RoleController::class);
 
     //co-operative routes
-    Route::get('/co-operative/user/create', [CoUserController::class, 'create'])->name('cooperative.user.create');
-    Route::get('/co-operative/user', [CoUserController::class, 'index'])->name('cooperative.user');
-    Route::post('/co-operative/user', [CoUserController::class, 'store'])->name('cooperative.user.store');
-    Route::get('/co-operative/user/{id}/edit', [CoUserController::class, 'edit'])->name('cooperative.user.edit');
-    Route::put('/co-operative/user/{id}', [CoUserController::class, 'update'])->name('cooperative.user.update');
-    Route::delete('/co-operative/user/{id}', [CoUserController::class, 'destroy'])->name('cooperative.user.destroy');
+    Route::get('/co-operative/user/create', [CoUserController::class , 'create'])->name('cooperative.user.create');
+    Route::get('/co-operative/user', [CoUserController::class , 'index'])->name('cooperative.user');
+    Route::post('/co-operative/user', [CoUserController::class , 'store'])->name('cooperative.user.store');
+    Route::get('/co-operative/user/{id}/edit', [CoUserController::class , 'edit'])->name('cooperative.user.edit');
+    Route::put('/co-operative/user/{id}', [CoUserController::class , 'update'])->name('cooperative.user.update');
+    Route::delete('/co-operative/user/{id}', [CoUserController::class , 'destroy'])->name('cooperative.user.destroy');
 
     // group routes
-    Route::get('/group/create', [GroupController ::class, 'create'])->name('group.create');
-    Route::get('/group', [GroupController::class, 'index'])->name('group.index');
-    Route::post('/group', [GroupController::class, 'store'])->name('group.store');
-    Route::get('/group/{id}/edit', [GroupController::class, 'edit'])->name('group.edit');
-    Route::put('/group/{id}', [GroupController::class, 'update'])->name('group.update');
-    Route::delete('/group/{id}', [GroupController::class, 'destroy'])->name('group.destroy');
+    Route::get('/group/create', [GroupController::class , 'create'])->name('group.create');
+    Route::get('/group', [GroupController::class , 'index'])->name('group.index');
+    Route::post('/group', [GroupController::class , 'store'])->name('group.store');
+    Route::get('/group/{id}/edit', [GroupController::class , 'edit'])->name('group.edit');
+    Route::put('/group/{id}', [GroupController::class , 'update'])->name('group.update');
+    Route::delete('/group/{id}', [GroupController::class , 'destroy'])->name('group.destroy');
 
     //Season routes
-    Route::get('/season/create', [SeasonController ::class, 'create'])->name('season.create');
-    Route::get('/season', [SeasonController::class, 'index'])->name('season.index');
-    Route::post('/season', [SeasonController::class, 'store'])->name('season.store');
-    Route::get('/season/{id}/edit', [SeasonController::class, 'edit'])->name('season.edit');
-    Route::put('/season/{id}', [SeasonController::class, 'update'])->name('season.update');
-    Route::delete('/season/{id}', [SeasonController::class, 'destroy'])->name('season.destroy');
+    Route::get('/season/create', [SeasonController::class , 'create'])->name('season.create');
+    Route::get('/season', [SeasonController::class , 'index'])->name('season.index');
+    Route::post('/season', [SeasonController::class , 'store'])->name('season.store');
+    Route::get('/season/{id}/edit', [SeasonController::class , 'edit'])->name('season.edit');
+    Route::put('/season/{id}', [SeasonController::class , 'update'])->name('season.update');
+    Route::delete('/season/{id}', [SeasonController::class , 'destroy'])->name('season.destroy');
 
     // departments routes
     Route::get('/department', [DepartmentController::class, 'index'])->name('department.index');
@@ -87,8 +89,24 @@ Route::middleware('auth.any')->group(function () {
     Route::get('/members/{id}/allocations',[RiceDeliveryController::class,'getAllocations'])->name('allocation.getAllocations');
 
 
+    // Procurement Routes
+    Route::get('/tender', [TenderController::class , 'index'])->name('tender.index');
+    Route::get('/bid', [BidController::class , 'index'])->name('bid.index');
+    Route::view('/supplier', 'supplier.index', ['title' => 'Suppliers'])->name('supplier.index');
+    Route::view('/committee', 'committee.index', ['title' => 'Committees'])->name('committee.index');
+    Route::view('/tender-evaluation', 'tender-evaluation.index', ['title' => 'Tender Evaluations'])->name('tender-evaluation.index');
+    Route::view('/compost', 'compost.index', ['title' => 'Compost Management'])->name('compost.index');
+    Route::view('/contract', 'contract.index', ['title' => 'Contracts'])->name('contract.index');
+    Route::view('/decision', 'decision.index', ['title' => 'Decisions'])->name('decision.index');
+    Route::view('/meeting', 'meeting.index', ['title' => 'Meetings'])->name('meeting.index');
+    Route::view('/member-payment', 'member-payment.index', ['title' => 'Member Payments'])->name('member-payment.index');
+    Route::view('/procurement-plan', 'procurement-plan.index', ['title' => 'Procurement Plan'])->name('procurement-plan.index');
+    Route::view('/report', 'report.index', ['title' => 'Reports'])->name('report.index');
+    Route::view('/supplier-payment', 'supplier-payment.index', ['title' => 'Supplier Payments'])->name('supplier-payment.index');
+    Route::view('/task', 'task.index', ['title' => 'Tasks'])->name('task.index');
+
     // Logout route
-    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::post('/logout', [LoginController::class , 'logout'])->name('logout');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
