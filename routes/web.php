@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\BidController;
+use App\Http\Controllers\CompostGroupProductionController;
+use App\Http\Controllers\CompostInputExpenseController;
+use App\Http\Controllers\CompostUsageController;
 use App\Http\Controllers\TenderController;
 use App\Http\Controllers\CoOperative\CoUserController;
 use App\Http\Controllers\DashboardController;
@@ -81,12 +84,23 @@ Route::middleware('auth.any')->group(function () {
 //input alloction
     Route::get('/allocation',[InputAllocationController::class,'index'])->name('allocation.index');
     Route::post('/allocation/action',[InputAllocationController::class,'handleAction'])->name('allocation.handleAction');
-    Route::get('/member/{id}/allocations',[InputAllocationController::class,'getAllocations'])->name('allocation.getAllocations');
 
     //RiceDelivery
     Route::get('/riceDelivery',[RiceDeliveryController::class,'index'])->name('riceDelivery.index');
     Route::post('/riceDelivery/action',[RiceDeliveryController::class,'handleAction'])->name('riceDelivery.handleAction');
-    Route::get('/members/{id}/allocations',[RiceDeliveryController::class,'getAllocations'])->name('allocation.getAllocations');
+
+    //compost group route
+    Route::get('/compost', [CompostGroupProductionController::class, 'index'])->name('compost.index');
+    Route::post('/compost/action', [CompostGroupProductionController::class, 'handleAction'])->name('compost.store');
+
+    //compost input route
+    Route::get('/compostInput', [CompostInputExpenseController::class, 'index'])->name('compostInput.index');
+    Route::post('/compostInput/action', [CompostInputExpenseController::class, 'handleAction'])->name('compostInput.store');
+
+
+    //compost group route
+    Route::get('/compostUsage', [CompostUsageController::class, 'index'])->name('compostUsage.index');
+    Route::post('/compostUsage/action', [CompostUsageController::class, 'handleAction'])->name('compost-usage.store');
 
 
     // Procurement Routes
@@ -95,7 +109,6 @@ Route::middleware('auth.any')->group(function () {
     Route::view('/supplier', 'supplier.index', ['title' => 'Suppliers'])->name('supplier.index');
     Route::view('/committee', 'committee.index', ['title' => 'Committees'])->name('committee.index');
     Route::view('/tender-evaluation', 'tender-evaluation.index', ['title' => 'Tender Evaluations'])->name('tender-evaluation.index');
-    Route::view('/compost', 'compost.index', ['title' => 'Compost Management'])->name('compost.index');
     Route::view('/contract', 'contract.index', ['title' => 'Contracts'])->name('contract.index');
     Route::view('/decision', 'decision.index', ['title' => 'Decisions'])->name('decision.index');
     Route::view('/meeting', 'meeting.index', ['title' => 'Meetings'])->name('meeting.index');

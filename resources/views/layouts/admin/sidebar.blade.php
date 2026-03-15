@@ -117,11 +117,43 @@
                 </a>
             </li>
 
-            <li class="side-nav-item">
+            {{-- <li class="side-nav-item">
                 <a href="{{ route('compost.index') }}" class="side-nav-link">
                     <span class="menu-icon"><i data-lucide="leaf"></i></span>
                     <span class="menu-text" data-lang="book"> Compost </span>
                 </a>
+            </li> --}}
+
+
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarCompost" aria-expanded="false"
+                    aria-controls="sidebarCompost" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="leaf"></i></span>
+                    <span class="menu-text" data-lang="compost"> Compost </span>
+                    <span class="menu-arrow"></span>
+                </a>
+
+                <div class="collapse" id="sidebarCompost">
+                    <ul class="sub-menu">
+                        <li class="side-nav-item">
+                            <a href="{{ route('compost.index') }}" class="side-nav-link">
+                                <span class="menu-text">Group Compost</span>
+                            </a>
+                        </li>
+
+                        <li class="side-nav-item">
+                            <a href="{{ route('compostInput.index') }}" class="side-nav-link">
+                                <span class="menu-text">Compost Input</span>
+                            </a>
+                        </li>
+
+                        <li class="side-nav-item">
+                            <a href="{{ route('compostUsage.index') }}" class="side-nav-link">
+                                <span class="menu-text">Compost Usage</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
 
             <li class="side-nav-item">
