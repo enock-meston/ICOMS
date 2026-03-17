@@ -60,6 +60,7 @@
                                         <th>Contract</th>
                                         <th>Supplier</th>
                                         <th>Amount</th>
+                                        <th>Delivery</th>
                                         <th>Date</th>
                                         <th>Channel</th>
                                         <th>Status</th>
@@ -73,6 +74,7 @@
                                             <td>{{ $payment->contract_id }}</td>
                                             <td>{{ $payment->supplier_id }}</td>
                                             <td>{{ number_format($payment->amount, 2) }}</td>
+                                            <td>{{ $payment->delivery_id }}</td>
                                             <td>{{ $payment->payment_date }}</td>
                                             <td>{{ $payment->channel }}</td>
                                             <td>
@@ -135,7 +137,11 @@
                                 <label class="form-label">Contract</label>
                                 <select name="contract_id" id="contract_id" class="form-select">
                                     <option value="" disabled selected>Select Contract</option>
-                                    {{-- populate when contracts module is ready --}}
+                                    @foreach($Contract as $contract)
+                                        <option value="{{ $contract->id }}">
+                                            {{ $contract->contract_no }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -145,6 +151,18 @@
                                     @foreach($Suppliers as $supplier)
                                         <option value="{{ $supplier->id }}">
                                             {{ $supplier->supplier_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                             <div class="col-md-6">
+                                <label class="form-label">Delivery</label>
+                                <select name="delivery_id" id="delivery_id" class="form-select">
+                                    <option value="" disabled selected>Select Delivery</option>
+                                    @foreach($Deliveries as $delivery)
+                                        <option value="{{ $delivery->id }}">
+                                            {{ $delivery->contract->contract_no ?? 'N/A' }} - {{ $delivery->supplier->supplier_name ?? 'N/A' }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -226,6 +244,7 @@
                 document.getElementById('payment_date').value     = payment.payment_date ? payment.payment_date.substring(0, 10) : '';
                 document.getElementById('payment_channel').value  = payment.channel;
                 document.getElementById('payment_status').value   = payment.status;
+                document.getElementById('delivery_id').value      = payment.delivery_id;
                 title.innerText = 'Edit Payment';
                 btn.innerText   = 'Update Payment';
                 btn.disabled    = false;

@@ -64,7 +64,7 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $contract->tender->title ?? 'N/A' }}</td>
-                                    <td>{{ $contract->supplier->name ?? 'N/A' }}</td>
+                                    <td>{{ $contract->supplier->supplier_name ?? 'N/A' }}</td>
                                     <td>{{ $contract->contract_no }}</td>
                                     <td>{{ number_format($contract->contract_amount, 2) }}</td>
                                     <td>{{ $contract->start_date }}</td>
@@ -144,7 +144,7 @@
                                 <select name="supplier_id" id="supplier_id" class="form-select" required>
                                     <option value="">Select Supplier</option>
                                     @foreach ($suppliers as $supplier)
-                                        <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                                        <option value="{{ $supplier->id }}">{{ $supplier->supplier_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -188,7 +188,11 @@
 
                             <div class="col-12">
                                 <label>Status</label>
-                                <input type="text" name="status" id="status" class="form-control">
+                                 <select name="status" id="statuss" class="form-select">
+                                    <option value="ACTIVE">ACTIVE</option>
+                                    <option value="COMPLETED">COMPLETED</option>
+                                    <option value="TERMINATED">TERMINATED</option>
+                                </select>
                             </div>
                         </div>
 
@@ -232,7 +236,7 @@
                 document.getElementById('signed_by_manager').value = el.dataset.signed_by_manager || '';
                 document.getElementById('signed_at').value = el.dataset.signed_at || '';
                 document.getElementById('description').value = el.dataset.description || '';
-                document.getElementById('status').value = el.dataset.status || '';
+                document.getElementById('statuss').value = el.dataset.status || '';
             }
 
             if (action === "VIEW") {
@@ -258,7 +262,7 @@
 
         function enableFields(disabled) {
             const fields = ['tender_id', 'supplier_id', 'contract_no', 'contract_amount', 'start_date', 'end_date',
-                'signed_by_manager', 'signed_at', 'description', 'status'
+                'signed_by_manager', 'signed_at', 'description', 'statuss'
             ];
             fields.forEach(id => {
                 const el = document.getElementById(id);

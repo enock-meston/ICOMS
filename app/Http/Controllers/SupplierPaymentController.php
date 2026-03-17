@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contract;
+use App\Models\Deliverie;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,8 +17,10 @@ class SupplierPaymentController extends Controller
             'SELECT_ALL', null, null, null, null, null, null, null, null, null
         ]);
         $Suppliers = Supplier::orderBy('supplier_name', 'asc')->get();
+        $Contract = Contract::orderBy('id', 'asc')->get();
+        $Deliveries = Deliverie::orderBy('id', 'asc')->get();
 
-        return view('supplier-payment.index', compact('title', 'Payments', 'Suppliers'));
+        return view('supplier-payment.index', compact('title', 'Payments', 'Suppliers', 'Contract', 'Deliveries'));
     }
 
     public function handleAction(Request $request)

@@ -163,7 +163,10 @@ Route::middleware('auth.any')->group(function () {
     Route::post('/riceDelivery/action',     [RiceDeliveryController::class, 'handleAction'])->name('riceDelivery.handleAction');
     Route::get('/members/{id}/allocations', [RiceDeliveryController::class, 'getAllocations'])->name('allocation.getAllocations');
 
-
+// Placeholder pages (no controller needed)
+   Route::view('/decision',         'decision.index',         ['title' => 'Decisions'])->name('decision.index');
+    Route::view('/meeting',          'meeting.index',          ['title' => 'Meetings'])->name('meeting.index');
+    Route::view('/report',           'report.index',           ['title' => 'Reports'])->name('report.index');
     // Logout
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
