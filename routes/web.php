@@ -1,16 +1,14 @@
 <?php
 
 use App\Http\Controllers\BidController;
+use App\Http\Controllers\CommitteeController;
 use App\Http\Controllers\CompostGroupProductionController;
 use App\Http\Controllers\CompostInputExpenseController;
 use App\Http\Controllers\CompostUsageController;
 use App\Http\Controllers\ContractController;
-use App\Http\Controllers\TenderController;
-use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\SupplierPaymentController;
-use App\Http\Controllers\TenderEvaluationController;
 use App\Http\Controllers\CoOperative\CoUserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DeliverieController;
 use App\Http\Controllers\department\DepartmentController;
 use App\Http\Controllers\FieldActivityController;
 use App\Http\Controllers\GroupController;
@@ -24,8 +22,11 @@ use App\Http\Controllers\ProductionPlanController;
 use App\Http\Controllers\RiceDeliveryController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SeasonController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\SupplierPaymentController;
 use App\Http\Controllers\TaskController;
-use App\Http\Controllers\CommitteeController;
+use App\Http\Controllers\TenderController;
+use App\Http\Controllers\TenderEvaluationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,25 +56,25 @@ Route::middleware('auth.any')->group(function () {
 
     // Group routes
     Route::get('/group/create', [GroupController::class, 'create'])->name('group.create');
-    Route::get('/group',[GroupController::class, 'index'])->name('group.index');
-    Route::post('/group',[GroupController::class, 'store'])->name('group.store');
+    Route::get('/group', [GroupController::class, 'index'])->name('group.index');
+    Route::post('/group', [GroupController::class, 'store'])->name('group.store');
     Route::get('/group/{id}/edit', [GroupController::class, 'edit'])->name('group.edit');
     Route::put('/group/{id}',      [GroupController::class, 'update'])->name('group.update');
     Route::delete('/group/{id}',   [GroupController::class, 'destroy'])->name('group.destroy');
 
     // Season routes
-    Route::get('/season/create',[SeasonController::class, 'create'])->name('season.create');
-    Route::get('/season',[SeasonController::class, 'index'])->name('season.index');
-    Route::post('/season',[SeasonController::class, 'store'])->name('season.store');
+    Route::get('/season/create', [SeasonController::class, 'create'])->name('season.create');
+    Route::get('/season', [SeasonController::class, 'index'])->name('season.index');
+    Route::post('/season', [SeasonController::class, 'store'])->name('season.store');
     Route::get('/season/{id}/edit', [SeasonController::class, 'edit'])->name('season.edit');
-    Route::put('/season/{id}',[SeasonController::class, 'update'])->name('season.update');
-    Route::delete('/season/{id}',[SeasonController::class, 'destroy'])->name('season.destroy');
+    Route::put('/season/{id}', [SeasonController::class, 'update'])->name('season.update');
+    Route::delete('/season/{id}', [SeasonController::class, 'destroy'])->name('season.destroy');
 
     // Department routes
-    Route::get('/department',[DepartmentController::class, 'index'])->name('department.index');
-    Route::post('/department',[DepartmentController::class, 'store'])->name('department.store');
-    Route::put('/department/{id}',[DepartmentController::class, 'update'])->name('department.update');
-    Route::delete('/department/{id}',[DepartmentController::class, 'destroy'])->name('department.destroy');
+    Route::get('/department', [DepartmentController::class, 'index'])->name('department.index');
+    Route::post('/department', [DepartmentController::class, 'store'])->name('department.store');
+    Route::put('/department/{id}', [DepartmentController::class, 'update'])->name('department.update');
+    Route::delete('/department/{id}', [DepartmentController::class, 'destroy'])->name('department.destroy');
 
     // Production Plan
     Route::get('/productPlan',         [ProductionPlanController::class, 'index'])->name('plan.index');
@@ -97,18 +98,18 @@ Route::middleware('auth.any')->group(function () {
     Route::post('/compostInput/action', [CompostInputExpenseController::class, 'handleAction'])->name('compostInput.store');
 
     // Field Activity
-    Route::get('/fieldativity',[FieldActivityController::class, 'index'])->name('field-activity.index');
-    Route::post('/fieldativity/action',[FieldActivityController::class, 'handleAction'])->name('field-activity.store');
+    Route::get('/fieldativity', [FieldActivityController::class, 'index'])->name('field-activity.index');
+    Route::post('/fieldativity/action', [FieldActivityController::class, 'handleAction'])->name('field-activity.store');
 
     // Member
-    Route::get('/member',[MemberController::class, 'index'])->name('member.index');
-    Route::post('/member/action',[MemberController::class, 'handleAction'])->name('members.handleAction');
-    Route::get('/members/download-template',[MemberController::class, 'downloadTemplate'])->name('members.downloadTemplate');
-    Route::post('/members/import',[MemberController::class, 'import'])->name('members.import');
+    Route::get('/member', [MemberController::class, 'index'])->name('member.index');
+    Route::post('/member/action', [MemberController::class, 'handleAction'])->name('members.handleAction');
+    Route::get('/members/download-template', [MemberController::class, 'downloadTemplate'])->name('members.downloadTemplate');
+    Route::post('/members/import', [MemberController::class, 'import'])->name('members.import');
 
 
     // Committees
-    Route::get('/committee',[CommitteeController::class, 'index'])->name('committee.index');
+    Route::get('/committee', [CommitteeController::class, 'index'])->name('committee.index');
     Route::post('/committees/action', [CommitteeController::class, 'handleAction'])->name('committees.action');
 
 
@@ -137,7 +138,7 @@ Route::middleware('auth.any')->group(function () {
 
     Route::get('/tender', [TenderController::class, 'index'])->name('tender.index');
     // Tenders
-    Route::get('/tender',[TenderController::class, 'index'])->name('tender.index');
+    Route::get('/tender', [TenderController::class, 'index'])->name('tender.index');
     Route::get('/tenders/{id}',    [TenderController::class, 'show'])->name('tenders.show');
     Route::post('/tenders/action', [TenderController::class, 'handleAction'])->name('tenders.action');
 
@@ -163,10 +164,16 @@ Route::middleware('auth.any')->group(function () {
     Route::post('/riceDelivery/action',     [RiceDeliveryController::class, 'handleAction'])->name('riceDelivery.handleAction');
     Route::get('/members/{id}/allocations', [RiceDeliveryController::class, 'getAllocations'])->name('allocation.getAllocations');
 
-// Placeholder pages (no controller needed)
-   Route::view('/decision',         'decision.index',         ['title' => 'Decisions'])->name('decision.index');
+    // Placeholder pages (no controller needed)
+    Route::view('/decision',         'decision.index',         ['title' => 'Decisions'])->name('decision.index');
     Route::view('/meeting',          'meeting.index',          ['title' => 'Meetings'])->name('meeting.index');
     Route::view('/report',           'report.index',           ['title' => 'Reports'])->name('report.index');
+
+    /// deriverie
+    Route::get('/deliveries', [DeliverieController::class, 'index'])->name('deliveries.index');
+    Route::post('/deliveries/action', [DeliverieController::class, 'handleAction'])->name('delivery.store');
+
+
     // Logout
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });

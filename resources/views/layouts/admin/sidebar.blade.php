@@ -199,15 +199,15 @@
 
             <li class="side-nav-item">
                 <a href="{{ route('procurement-plan.index') }}" class="side-nav-link">
-                {{-- <a href="" class="side-nav-link"> --}}
+                    {{-- <a href="" class="side-nav-link"> --}}
                     <span class="menu-icon"><i data-lucide="file-text"></i></span>
                     <span class="menu-text" data-lang="book"> Procurement Plan </span>
                 </a>
             </li>
 
-             <li class="side-nav-item">
+            <li class="side-nav-item">
                 <a href="{{ route('procurement-item.index') }}" class="side-nav-link">
-                {{-- <a href="" class="side-nav-link"> --}}
+                    {{-- <a href="" class="side-nav-link"> --}}
                     <span class="menu-icon"><i data-lucide="file-text"></i></span>
                     <span class="menu-text" data-lang="book"> Procurement Item </span>
                 </a>
@@ -224,6 +224,12 @@
                 <a href="{{ route('bid.index') }}" class="side-nav-link">
                     <span class="menu-icon"><i data-lucide="gavel"></i></span>
                     <span class="menu-text" data-lang="book"> Bids </span>
+                </a>
+            </li>
+            <li class="side-nav-item">
+                <a href="{{ route('deliveries.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="truck"></i></span>
+                    <span class="menu-text" data-lang="book"> Deliverie </span>
                 </a>
             </li>
 
