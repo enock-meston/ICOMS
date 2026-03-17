@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 class Tender extends Model
 {
     protected $fillable = [
-        'item_id',
         'tender_ref_no',
         'title',
         'procurement_method',
@@ -17,11 +16,6 @@ class Tender extends Model
         'approved_by_manager',
         'notice_file'
     ];
-
-    public function item()
-    {
-        return $this->belongsTo(ProcurementItem::class, 'item_id');
-    }
 
     public function bids()
     {
