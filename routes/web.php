@@ -4,7 +4,7 @@ use App\Http\Controllers\BidController;
 use App\Http\Controllers\CompostGroupProductionController;
 use App\Http\Controllers\CompostInputExpenseController;
 use App\Http\Controllers\CompostUsageController;
-use App\Http\Controllers\TenderController;
+use App\Http\Controllers\ContractController;
 use App\Http\Controllers\CoOperative\CoUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\department\DepartmentController;
@@ -13,10 +13,15 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\InputAllocationController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\MemberPaymentController;
+use App\Http\Controllers\ProcurementItemController;
+use App\Http\Controllers\ProcurementPlanController;
 use App\Http\Controllers\ProductionPlanController;
 use App\Http\Controllers\RiceDeliveryController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SeasonController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TenderController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -101,22 +106,38 @@ Route::middleware('auth.any')->group(function () {
     //compost group route
     Route::get('/compostUsage', [CompostUsageController::class, 'index'])->name('compostUsage.index');
     Route::post('/compostUsage/action', [CompostUsageController::class, 'handleAction'])->name('compost-usage.store');
-
-
+    // task
+    Route::get('/task', [TaskController::class, 'index'])->name('task.index');
+    Route::post('/task/action', [TaskController::class, 'handleAction'])->name('task.store');
+    //meber payment
+    Route::get('/member-payment', [MemberPaymentController::class,'index'] )->name('member-payment.index');
+    Route::post('/member-payment/action', [MemberPaymentController::class,'handleAction'] )->name('member-payment.store');
     // Procurement Routes
-    Route::get('/tender', [TenderController::class , 'index'])->name('tender.index');
+    Route::get('/procurement-plan',[ProcurementPlanController::class,'index'])->name('procurement-plan.index');
+    Route::post('/procurement-plan/action',[ProcurementPlanController::class,'handleAction'])->name('procurementPlan.store');
+    // Procurement item Routes
+    Route::get('/procurement-item',[ProcurementItemController::class,'index'])->name('procurement-item.index');
+    Route::post('/procurement-item/action',[ProcurementItemController::class,'handleAction'])->name('procurementItem.store');
+//Bids
     Route::get('/bid', [BidController::class , 'index'])->name('bid.index');
+    Route::post('/bid/action', [BidController::class , 'handleAction'])->name('bid.store');
+
+// Contract
+    Route::get('/contract', [ContractController::class, 'index'])->name('contract.index');
+    Route::post('/contract/action', [ContractController::class, 'handleAction'])->name('contract.store');
+
+
+
+
+
+    Route::get('/tender', [TenderController::class , 'index'])->name('tender.index');
     Route::view('/supplier', 'supplier.index', ['title' => 'Suppliers'])->name('supplier.index');
     Route::view('/committee', 'committee.index', ['title' => 'Committees'])->name('committee.index');
     Route::view('/tender-evaluation', 'tender-evaluation.index', ['title' => 'Tender Evaluations'])->name('tender-evaluation.index');
-    Route::view('/contract', 'contract.index', ['title' => 'Contracts'])->name('contract.index');
     Route::view('/decision', 'decision.index', ['title' => 'Decisions'])->name('decision.index');
     Route::view('/meeting', 'meeting.index', ['title' => 'Meetings'])->name('meeting.index');
-    Route::view('/member-payment', 'member-payment.index', ['title' => 'Member Payments'])->name('member-payment.index');
-    Route::view('/procurement-plan', 'procurement-plan.index', ['title' => 'Procurement Plan'])->name('procurement-plan.index');
     Route::view('/report', 'report.index', ['title' => 'Reports'])->name('report.index');
     Route::view('/supplier-payment', 'supplier-payment.index', ['title' => 'Supplier Payments'])->name('supplier-payment.index');
-    Route::view('/task', 'task.index', ['title' => 'Tasks'])->name('task.index');
 
     // Logout route
     Route::post('/logout', [LoginController::class , 'logout'])->name('logout');

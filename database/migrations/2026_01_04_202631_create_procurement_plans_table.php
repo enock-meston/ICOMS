@@ -18,9 +18,7 @@ return new class extends Migration
             $table->foreignId('prepared_by')->constrained('co_users');
             $table->foreignId('approved_by_manager')->nullable()->constrained('co_users');
             $table->foreignId('approved_by_board')->nullable()->constrained('co_users');
-
             $table->date('approval_date')->nullable();
-
             $table->enum('status', [
                 'DRAFT',
                 'UNDER_REVIEW',

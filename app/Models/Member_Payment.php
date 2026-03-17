@@ -28,4 +28,9 @@ class Member_Payment extends Model
         return $this->belongsTo(CoUser::class, 'manager_id');
     }
 
+    public function delivery()
+    {
+        return $this->belongsTo(Rice_Delivery::class, 'delivery_id');
+    }
+
 }
