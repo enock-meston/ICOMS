@@ -17,26 +17,26 @@
             <div class="col-lg-12">
                 <div class="card border p-3">
                     <div class="d-flex flex-wrap align-items-center gap-2">
-                        <button type="button" onclick="setAction('INSERT')" data-bs-toggle="modal"
-                            data-bs-target="#tenderModal"
-                            class="btn btn-sm btn-primary">Add New Tender
+                        <button type="button" onclick="setAction('INSERT')"
+                            data-bs-toggle="modal" data-bs-target="#tenderModal"
+                            class="btn btn-sm btn-primary">
+                            Add New Tender
                         </button>
                     </div>
                 </div>
 
-                @if (session('success'))
-                    <div class="alert alert-success text-bg-success alert-dismissible" role="alert">
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"
-                            aria-label="Close"></button>
+                @if(session('success'))
+                    <div class="alert alert-success text-bg-success alert-dismissible mt-2" role="alert">
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
                         <div>{{ session('success') }}</div>
                     </div>
                 @endif
 
-                @if ($errors->any())
-                    <div class="alert alert-danger alert-dismissible" role="alert">
+                @if($errors->any())
+                    <div class="alert alert-danger alert-dismissible mt-2" role="alert">
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
+                            @foreach($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>
@@ -59,7 +59,6 @@
                                         <th>#</th>
                                         <th>Ref No</th>
                                         <th>Title</th>
-                                        <th>Item</th>
                                         <th>Method</th>
                                         <th>Publish Date</th>
                                         <th>Closing Date</th>
@@ -68,53 +67,58 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($tenders as $index => $tender)
+                                    @forelse($tenders as $index => $tender)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $tender->tender_ref_no }}</td>
                                             <td>{{ $tender->title }}</td>
-                                            <td>{{ $tender->item->description ?? 'N/A' }}</td>
                                             <td>{{ $tender->procurement_method }}</td>
                                             <td>{{ $tender->publish_date }}</td>
                                             <td>{{ $tender->closing_date }}</td>
                                             <td>
-                                                <span class="badge @if($tender->status == 'PUBLISHED') bg-success @elseif($tender->status == 'CLOSED') bg-danger @else bg-secondary @endif">
+                                                <span class="badge
+                                                    @if($tender->status == 'PUBLISHED') bg-success
+                                                    @elseif($tender->status == 'CLOSED') bg-danger
+                                                    @elseif($tender->status == 'UNDER_EVALUATION') bg-warning
+                                                    @elseif($tender->status == 'AWARDED') bg-info
+                                                    @else bg-secondary
+                                                    @endif">
                                                     {{ $tender->status }}
                                                 </span>
                                             </td>
-                                            <td>
-                                                <button class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                                    data-bs-target="#tenderModal" onclick="setAction('VIEW', this)"
-                                                    data-id="{{ $tender->id }}"
-                                                    data-tender_ref_no="{{ $tender->tender_ref_no }}"
-                                                    data-title="{{ $tender->title }}"
-                                                    data-item_id="{{ $tender->item_id }}"
-                                                    data-procurement_method="{{ $tender->procurement_method }}"
-                                                    data-publish_date="{{ $tender->publish_date }}"
-                                                    data-closing_date="{{ $tender->closing_date }}"
-                                                    data-status="{{ $tender->status }}">
-                                                    View
+                                            <td class="d-flex gap-1">
+                                                {{-- View button commented out as requested --}}
+                                                {{-- 
+                                                <button class="btn btn-info btn-sm"
+                                                    onclick="setAction('VIEW', {{ json_encode($tender) }})"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#tenderModal">
+                                                    <i class="ri-eye-line"></i> View
+                                                </button>
+                                                --}}
+
+                                                {{-- Edit --}}
+                                                <button class="btn btn-success btn-sm"
+                                                    onclick="setAction('UPDATE', {{ json_encode($tender) }})"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#tenderModal">
+                                                    <i class="ri-edit-line"></i> Edit
                                                 </button>
 
-                                                <button class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                                    data-bs-target="#tenderModal" onclick="setAction('UPDATE', this)"
-                                                    data-id="{{ $tender->id }}"
-                                                    data-tender_ref_no="{{ $tender->tender_ref_no }}"
-                                                    data-title="{{ $tender->title }}"
-                                                    data-item_id="{{ $tender->item_id }}"
-                                                    data-procurement_method="{{ $tender->procurement_method }}"
-                                                    data-publish_date="{{ $tender->publish_date }}"
-                                                    data-closing_date="{{ $tender->closing_date }}"
-                                                    data-status="{{ $tender->status }}">
-                                                    Edit
-                                                </button>
-
-                                                <button class="btn btn-danger btn-sm" onclick="alert('Delete action triggered for ID: {{ $tender->id }}')">
-                                                    Delete
+                                                {{-- Delete --}}
+                                                <button class="btn btn-danger btn-sm"
+                                                    onclick="setAction('DELETE', {{ json_encode($tender) }})"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#tenderModal">
+                                                    <i class="ri-delete-bin-line"></i> Delete
                                                 </button>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="8" class="text-center">No tenders found.</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -133,57 +137,69 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="">
+                    <form method="POST" action="{{ route('tenders.action') }}" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="id" id="tender_id">
+                        <input type="hidden" name="id"     id="tender_id">
                         <input type="hidden" name="action" id="tender_action">
 
-                        <div class="row g-3">
+                        <div class="row g-3" id="tenderFields">
                             <div class="col-md-6">
                                 <label class="form-label">Reference No</label>
-                                <input type="text" name="tender_ref_no" id="tender_ref_no" class="form-control" required>
+                                <input type="text" name="tender_ref_no" id="tender_ref_no"
+                                    class="form-control">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Title</label>
-                                <input type="text" name="title" id="title" class="form-control" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Procurement Item</label>
-                                <select name="item_id" id="item_id" class="form-select" required>
-                                    <option value="" disabled selected>Select Item</option>
-                                    @foreach ($items as $item)
-                                        <option value="{{ $item->id }}">{{ $item->description }}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" name="title" id="title"
+                                    class="form-control">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Procurement Method</label>
-                                <select name="procurement_method" id="procurement_method" class="form-select" required>
-                                    <option value="Open Tender">Open Tender</option>
-                                    <option value="Restricted Tender">Restricted Tender</option>
-                                    <option value="Request for Quotation">Request for Quotation</option>
+                                <select name="procurement_method" id="procurement_method" class="form-select">
+                                    <option value="OPEN_TENDER">Open Tender</option>
+                                    <option value="RFQ">Request for Quotation (RFQ)</option>
+                                    <option value="DIRECT">Direct</option>
+                                    <option value="OTHER">Other</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Publish Date</label>
-                                <input type="date" name="publish_date" id="publish_date" class="form-control" required>
+                                <input type="date" name="publish_date" id="publish_date"
+                                    class="form-control">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Closing Date</label>
-                                <input type="date" name="closing_date" id="closing_date" class="form-control" required>
+                                <input type="date" name="closing_date" id="closing_date"
+                                    class="form-control">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Status</label>
-                                <select name="status" id="status" class="form-select" required>
-                                    <option value="DRAFT">DRAFT</option>
-                                    <option value="PUBLISHED">PUBLISHED</option>
-                                    <option value="CLOSED">CLOSED</option>
+                                <select name="status" id="tender_status" class="form-select">
+                                    <option value="PLANNED">Planned</option>
+                                    <option value="PUBLISHED">Published</option>
+                                    <option value="UNDER_EVALUATION">Under Evaluation</option>
+                                    <option value="CLOSED">Closed</option>
+                                    <option value="AWARDED">Awarded</option>
                                 </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Notice File <small class="text-muted">(PDF/DOC)</small></label>
+                                <input type="file" name="notice_file" id="notice_file"
+                                    class="form-control" accept=".pdf,.doc,.docx">
                             </div>
                         </div>
 
+                        {{-- Delete confirmation --}}
+                        <div id="deleteConfirmMsg" class="alert alert-danger mt-3 d-none">
+                            Are you sure you want to delete tender
+                            <strong id="deleteTenderName"></strong>?
+                            This action cannot be undone.
+                        </div>
+
                         <div class="mt-3 d-grid">
-                            <button type="button" id="tenderMainActionBtn" class="btn btn-primary" onclick="alert('Action placeholder')">Save Tender</button>
+                            <button type="submit" id="tenderMainActionBtn" class="btn btn-success">
+                                Save Tender
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -192,54 +208,69 @@
     </div>
 
     <script>
-        function setAction(action, el = null) {
-            const btn = document.getElementById('tenderMainActionBtn');
-            const actionInput = document.getElementById("tender_action");
-            const title = document.getElementById('tenderModalTitle');
-            const form = document.querySelector('#tenderModal form');
+        function setAction(action, tender = null) {
+            const btn         = document.getElementById('tenderMainActionBtn');
+            const actionInput = document.getElementById('tender_action');
+            const title       = document.getElementById('tenderModalTitle');
+            const fields      = document.getElementById('tenderFields');
+            const deleteMsg   = document.getElementById('deleteConfirmMsg');
 
+            // Reset state
+            btn.classList.remove('btn-info', 'btn-success', 'btn-primary', 'btn-danger');
+            deleteMsg.classList.add('d-none');
+            fields.classList.remove('d-none');
             actionInput.value = action;
-            btn.classList.remove("btn-info", "btn-success", "btn-primary", "btn-danger");
-            
+            enableFields(false);
+
             if (action === 'INSERT') {
-                form.reset();
+                document.querySelector('#tenderModal form').reset();
                 document.getElementById('tender_id').value = '';
-                btn.innerText = 'Insert Tender';
-                btn.disabled = false;
                 title.innerText = 'Add New Tender';
-                btn.classList.add("btn-primary");
-                enableFields(false);
+                btn.innerText   = 'Save Tender';
+                btn.disabled    = false;
+                btn.classList.add('btn-success');
             }
 
-            if (el) {
-                document.getElementById('tender_id').value = el.dataset.id;
-                document.getElementById('tender_ref_no').value = el.dataset.tender_ref_no;
-                document.getElementById('title').value = el.dataset.title;
-                document.getElementById('item_id').value = el.dataset.item_id;
-                document.getElementById('procurement_method').value = el.dataset.procurement_method;
-                document.getElementById('publish_date').value = el.dataset.publish_date;
-                document.getElementById('closing_date').value = el.dataset.closing_date;
-                document.getElementById('status').value = el.dataset.status;
+            // ✅ Removed item_id reference — it no longer exists in the form
+            if (tender) {
+                document.getElementById('tender_id').value          = tender.id;
+                document.getElementById('tender_ref_no').value      = tender.tender_ref_no;
+                document.getElementById('title').value              = tender.title;
+                document.getElementById('procurement_method').value = tender.procurement_method;
+                document.getElementById('publish_date').value       = tender.publish_date ? tender.publish_date.substring(0, 10) : '';
+                document.getElementById('closing_date').value       = tender.closing_date ? tender.closing_date.substring(0, 10) : '';
+                document.getElementById('tender_status').value      = tender.status;
             }
 
             if (action === 'VIEW') {
-                btn.innerText = 'View Tender';
-                btn.disabled = true;
                 title.innerText = 'View Tender';
-                btn.classList.add("btn-info");
+                btn.innerText   = 'Close';
+                btn.disabled    = true;
+                btn.classList.add('btn-info');
                 enableFields(true);
             } else if (action === 'UPDATE') {
-                btn.innerText = 'Update Tender';
-                btn.disabled = false;
-                title.innerText = 'Update Tender';
-                btn.classList.add("btn-success");
-                enableFields(false);
+                title.innerText = 'Edit Tender';
+                btn.innerText   = 'Update Tender';
+                btn.disabled    = false;
+                btn.classList.add('btn-success');
+            } else if (action === 'DELETE' && tender) {
+                fields.classList.add('d-none');
+                deleteMsg.classList.remove('d-none');
+                document.getElementById('deleteTenderName').innerText = tender.title;
+                title.innerText = 'Delete Tender';
+                btn.innerText   = 'Yes, Delete';
+                btn.disabled    = false;
+                btn.classList.add('btn-danger');
             }
         }
 
         function enableFields(disabled) {
-            const fields = ['tender_ref_no', 'title', 'item_id', 'procurement_method', 'publish_date', 'closing_date', 'status'];
-            fields.forEach(id => {
+            const ids = [
+                'tender_ref_no', 'title',
+                'procurement_method', 'publish_date',
+                'closing_date', 'tender_status', 'notice_file'
+            ];
+            ids.forEach(id => {
                 document.getElementById(id).disabled = disabled;
             });
         }
