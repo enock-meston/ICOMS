@@ -5,6 +5,8 @@ use App\Http\Controllers\TenderController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SupplierPaymentController;
 use App\Http\Controllers\TenderEvaluationController;
+use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\DecisionController;
 use App\Http\Controllers\CoOperative\CoUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\department\DepartmentController;
@@ -97,9 +99,17 @@ Route::middleware('auth.any')->group(function () {
     Route::get('/supplier',          [SupplierController::class, 'index'])->name('supplier.index');
     Route::post('/suppliers/action', [SupplierController::class, 'handleAction'])->name('suppliers.action');
 
-    // Supplier Payments ✅ old Route::view removed
+    // Supplier Payments
     Route::get('/supplier-payment',         [SupplierPaymentController::class, 'index'])->name('supplier-payment.index');
     Route::post('/supplier-payment/action', [SupplierPaymentController::class, 'handleAction'])->name('supplier-payment.action');
+
+    // Meetings ✅ old Route::view removed
+    Route::get('/meeting',         [MeetingController::class, 'index'])->name('meeting.index');
+    Route::post('/meeting/action', [MeetingController::class, 'handleAction'])->name('meeting.action');
+
+    // Decisions ✅ old Route::view removed
+    Route::get('/decision',         [DecisionController::class, 'index'])->name('decision.index');
+    Route::post('/decision/action', [DecisionController::class, 'handleAction'])->name('decision.action');
 
     // Input Allocation
     Route::get('/allocation',              [InputAllocationController::class, 'index'])->name('allocation.index');
@@ -117,8 +127,6 @@ Route::middleware('auth.any')->group(function () {
     // Placeholder pages (no controller needed)
     Route::view('/compost',          'compost.index',          ['title' => 'Compost Management'])->name('compost.index');
     Route::view('/contract',         'contract.index',         ['title' => 'Contracts'])->name('contract.index');
-    Route::view('/decision',         'decision.index',         ['title' => 'Decisions'])->name('decision.index');
-    Route::view('/meeting',          'meeting.index',          ['title' => 'Meetings'])->name('meeting.index');
     Route::view('/member-payment',   'member-payment.index',   ['title' => 'Member Payments'])->name('member-payment.index');
     Route::view('/procurement-plan', 'procurement-plan.index', ['title' => 'Procurement Plan'])->name('procurement-plan.index');
     Route::view('/report',           'report.index',           ['title' => 'Reports'])->name('report.index');
